@@ -109,5 +109,3 @@ deno run --watch --allow-net --allow-read main.ts
 
 Ready for you to view at http://localhost:3030/ \
 For look wroten endpoint, visit http://localhost:3030/api/hello
-
-Open `docs/intro.md` (this page) and edit some lines: the site **reloads automatically** and displays your changes.
