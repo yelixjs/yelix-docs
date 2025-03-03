@@ -37,7 +37,7 @@ jobs:
       - name: Upload to Deno Deploy
         uses: denoland/deployctl@v1
         with:
-          project: "muratkirazk-yelix-docs-17"
+          project: "yelix-docs"
           entrypoint: "https://deno.land/std@0.217.0/http/file_server.ts"
           root: "build"
           
