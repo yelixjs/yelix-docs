@@ -35,7 +35,7 @@ cd my-app
 To install Yelix, run the following command:
 
 ```bash
-deno add @murat/yelix
+deno add jsr:@murat/yelix
 ```
 
 This command installs the Yelix package into your project.
@@ -55,7 +55,7 @@ async function main() {
 
   // Load endpoints from a 'api' folder
   const currentDir = Deno.cwd();
-  const API_Folder = path.join(currentDir, 'testing', 'api');
+  const API_Folder = path.join(currentDir, 'api');
   await app.loadEndpointsFromFolder(API_Folder);
 
   app.serve();
@@ -100,12 +100,12 @@ export const path = '/api/hello';
 Run the development server:
 
 ```bash
-deno run --watch --allow-net --allow-read main.ts
+deno run --watch --allow-net --allow-read --allow*env main.ts
 ```
 
 - `--watch` - Automatically reloads the server when changes are made
 - `--allow-net` - Allows network access for serving the server
 - `--allow-read` - Allows file read access for loading endpoints
-
+- `--allow-env` - Checking where is deployed for Deno Deploy
 Ready for you to view at http://localhost:3030/ \
 For look wroten endpoint, visit http://localhost:3030/api/hello
