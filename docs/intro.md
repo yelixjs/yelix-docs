@@ -107,5 +107,7 @@ deno run --watch --allow-net --allow-read --allow*env main.ts
 - `--allow-net` - Allows network access for serving the server
 - `--allow-read` - Allows file read access for loading endpoints
 - `--allow-env` - Checking where is deployed for Deno Deploy
+
+
 Ready for you to view at http://localhost:3030/ \
 For look wroten endpoint, visit http://localhost:3030/api/hello
