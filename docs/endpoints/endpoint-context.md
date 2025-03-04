@@ -193,11 +193,11 @@ If you want to get the value of a header with an uppercase name, use `ctx.req.he
 
 ```ts
 // ❌ Will not work
-const headerRecord = c.req.header()
+const headerRecord = ctx.req.header()
 const foo = headerRecord['X-Foo']
 
 // ✅ Will work
-const foo = c.req.header('X-Foo')
+const foo = ctx.req.header('X-Foo')
 ```
 
 :::

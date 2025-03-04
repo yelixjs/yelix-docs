@@ -100,7 +100,7 @@ export const path = '/api/hello';
 Run the development server:
 
 ```bash
-deno run --watch --allow-net --allow-read --allow*env main.ts
+deno run --watch --allow-net --allow-read --allow-env main.ts
 ```
 
 - `--watch` - Automatically reloads the server when changes are made
