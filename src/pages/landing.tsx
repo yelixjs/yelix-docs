@@ -293,12 +293,11 @@ await main();`}
               <div className={styles.stepCard}>
                 <h3 className={styles.stepTitle}>3. Run Your App</h3>
                 <pre className={styles.codeBlock}>
-                  <code>deno run --watch --allow-net --allow-read --allow-env main.ts</code>
+                  <code>deno run --watch --allow-net --allow-env main.ts</code>
                 </pre>
                 <ul>
                   <li><kbd>--watch:</kbd> Automatically reloads server when changes are made</li>
                   <li><kbd>--allow-net:</kbd> Permits network access for serving</li>
-                  <li><kbd>--allow-read:</kbd> Allows file access for loading endpoints</li>
                   <li><kbd>--allow-env:</kbd> Checking where is deployed for Deno Deploy</li>
                 </ul>
               </div>
