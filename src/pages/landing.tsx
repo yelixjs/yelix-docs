@@ -259,7 +259,7 @@ type QueryType = z.infer<typeof querySchema>;
               <div className={styles.stepCard}>
                 <h3 className={styles.stepTitle}>1. Install Yelix</h3>
                 <pre className={styles.codeBlock}>
-                  <code>deno add yelix</code>
+                  <code>deno add jsr:@murat/yelix</code>
                 </pre>
               </div>
 
