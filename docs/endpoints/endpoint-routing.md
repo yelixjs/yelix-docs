@@ -14,6 +14,7 @@ Creating a basic endpoint in Yelix is straightforward. Below is an example of a 
 import type { Ctx } from "jsr:@murat/yelix";
 
 export async function GET(ctx: Ctx) {
+// highlight-next-line
   // highlight-next-line
   return await ctx.text('Hello World!', 200);
 }
