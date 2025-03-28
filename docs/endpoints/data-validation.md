@@ -152,7 +152,7 @@ inp().file()
 ## Complete Example
 
 ```ts
-export const validation: ValidationTypeBETA = {
+export const validation: ValidationType = {
   query: {
     page: inp().number().integer().min(1).optional(),
     limit: inp().number().integer().range(1, 100),
