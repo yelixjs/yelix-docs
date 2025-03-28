@@ -98,6 +98,17 @@ inp().array()
   .optional()              // Make field optional
 ```
 
+### Boolean Validation
+```ts
+inp().boolean()
+  .true()                  // Must be true
+  .false()                 // Must be false
+  .equals(true)            // Must equal value
+  .notEquals(false)        // Must not equal value
+  .transform()             // Transform strings/numbers to boolean
+  .optional()              // Make field optional
+```
+
 ### Object Validation
 ```ts
 inp().object({
@@ -144,15 +155,18 @@ inp().file()
 export const validation: ValidationTypeBETA = {
   query: {
     page: inp().number().integer().min(1).optional(),
-    limit: inp().number().integer().range(1, 100)
+    limit: inp().number().integer().range(1, 100),
+    isActive: inp().boolean().transform()  // Accepts "true", "1", true, etc.
   },
   body: inp().object({
     username: inp().string().min(3).max(255),
     email: inp().string().email(),
     age: inp().number().range(18, 99),
+    acceptTerms: inp().boolean().true(), 
     profile: inp().object({
       bio: inp().string().max(1000).optional(),
-      interests: inp().array().every(inp().string()).max(10)
+      interests: inp().array().every(inp().string()).max(10),
+      isPublic: inp().boolean().optional()
     }),
     avatar: inp().file().maxSize(5 * 1024 * 1024).mimeType(['image/jpeg', 'image/png'])
   }),
