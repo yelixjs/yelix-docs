@@ -15,6 +15,9 @@ import { Yelix, requestDataValidationYelixMiddleware } from 'jsr:@murat/yelix';
 
 export async function startServer() {
   const app = new Yelix();
+
+  // Load your endpoints here
+
   app.setMiddleware('dataValidation', requestDataValidationYelixMiddleware);
   app.serve();
 }
@@ -27,20 +30,19 @@ await startServer();
 ```ts title="hello.ts"
 import { Ctx, ValidationType, inp } from "jsr:@murat/yelix";
 
-export async function POST(ctx: Ctx) {
+export async function GET(ctx: Ctx) {
   const requestData = ctx.get('dataValidation').user;
-  const { username, email } = requestData.body;
-  return await ctx.text(`Hello, ${username}!`, 200);
+  const { name } = requestData.query;
+  return await ctx.text(`Hello, ${name}!`, 200);
 }
 
 export const path = '/api/hello';
 export const middlewares = ['dataValidation'];
 
 export const validation: ValidationType = {
-  body: inp().object({
-    username: inp().string().min(3).max(255),
-    email: inp().string().email()
-  })
+  query: {
+    name: inp().string().min(3).max(255)
+  }
 };
 ```
 
@@ -147,6 +149,64 @@ inp().file()
   .maxSize(5 * 1024 * 1024) // Maximum size (bytes)
   .mimeType(['image/jpeg', 'image/png']) // Valid mime types
   .optional()              // Make field optional
+```
+
+### Custom Validations
+```ts title="validation/superString.ts"
+// deno-lint-ignore-file no-explicit-any
+import { FailedMessage, StringZod, YelixInput } from '@murat/yelix';
+
+class SuperString extends StringZod {
+  override input: YelixInput;
+
+  constructor() {
+    const input = new YelixInput();
+    super(input);
+
+    this.input = input;
+  }
+
+  isUserID(failedMessage?: FailedMessage): this {
+    this.addRule(
+      'isUserID',
+      null,
+      (value: any) => ({
+        isOk:
+          value && typeof value === 'string'
+            ? value.startsWith('user_')
+            : false,
+      }),
+      failedMessage
+        ? failedMessage
+        : 'User ID must start with "user_"',
+    );
+    return this;
+  }
+}
+
+const superString = () => new SuperString();
+
+export { SuperString, superString };
+```
+
+```ts title="hello.ts"
+import { Ctx, ValidationType } from "jsr:@murat/yelix";
+import { superString } from "../validation/customValidation.ts";
+
+export async function GET(ctx: Ctx) {
+  const requestData = ctx.get('dataValidation').user;
+  const { name } = requestData.query;
+  return await ctx.text(`Hello, ${name}!`, 200);
+}
+
+export const path = '/api/customValidation';
+export const middlewares = ['dataValidation'];
+
+export const validation: ValidationType = {
+  query: {
+    userId: superString().trim().isUserID(),
+  }
+};
 ```
 
 ## Complete Example
