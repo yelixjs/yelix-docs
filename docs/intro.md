@@ -109,5 +109,7 @@ deno run --watch --allow-net --allow-read --allow-env main.ts
 - `--allow-env` - Checking where is deployed for Deno Deploy
 
 
-Ready for you to view at http://localhost:3030/ \
-For look wroten endpoint, visit http://localhost:3030/api/hello
+| Description | URL |
+|------------|-----|
+| URL for your index page | http://localhost:3030/ |
+| URL for the specified endpoint | http://localhost:3030/api/hello |

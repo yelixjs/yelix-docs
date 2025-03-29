@@ -48,7 +48,7 @@ export const middlewares = ['dataValidation'];
 // highlight-start
 export const validation: ValidationType = {
   query: {
-    name: z.string(),
+    name: inp().string()
   },
 };
 const querySchema = z.object(validation.query as z.ZodRawShape);

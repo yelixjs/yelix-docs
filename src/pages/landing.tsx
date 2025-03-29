@@ -220,11 +220,10 @@ export const path = '/api/hello';
                 <div className={styles.codeBlock}>
                   <SyntaxHighlighter language="typescript" style={codeStyle}>
                     {`import { Ctx, ValidationType } from "jsr:@murat/yelix";
-import { z } from "npm:zod@^3.24.1";
 
 export async function GET(ctx: Ctx) {
   const requestData = ctx.get('dataValidation').user;
-  const query: QueryType = requestData.query;
+  const query = requestData.query;
 
   return await ctx.text('Hello, ' + query.name, 200);
 }
@@ -234,11 +233,9 @@ export const middlewares = ['dataValidation'];
 
 export const validation: ValidationType = {
   query: {
-    name: z.string(),
+    name: inp().string(),
   },
 };
-const querySchema = z.object(validation.query as z.ZodRawShape);
-type QueryType = z.infer<typeof querySchema>;
 `}
                   </SyntaxHighlighter>
                 </div>

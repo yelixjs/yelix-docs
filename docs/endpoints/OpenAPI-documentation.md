@@ -63,7 +63,7 @@ export const middlewares = ["dataValidation"];
 
 export const validation: ValidationType = {
   query: {
-    name: z.string(),
+    name: inp().string(),
   },
 };
 ```
@@ -86,8 +86,8 @@ export const openAPI = {
   responses: {
     200: {
       type: 'application/json',
-      zodSchema: z.object({
-        message: z.string(),
+      zodSchema: inp().object({
+        message: inp().string(),
       }),
     },
   },
@@ -105,7 +105,7 @@ If you don't provide a description, Yelix will generate one for you based on the
 ```ts title="hello.ts"
 export const validation: ValidationType = {
   query: {
-    name: z.string()
+    name: inp().string()
     // highlight-next-line
       .min(3).max(255).email(),
   },
@@ -132,8 +132,8 @@ export const openAPI = {
   responses: {
     200: {
       type: 'application/json',
-      zodSchema: z.object({
-        message: z.string(),
+      zodSchema: inp().object({
+        message: inp().string(),
       }),
     },
   },
@@ -153,12 +153,13 @@ export const openAPI = {
   responses: {
     200: {
       type: 'application/json',
-      zodSchema: z.object({
-        username: z.string(),
-        email: z.string().email(),
-        age: z.number().min(18).max(99),
-        friendNames: z.array(z.string()),
-        country: z.enum(['USA', 'UK', 'India']),
+      zodSchema: inp().object({
+        username: inp().string(),
+        email: inp().string().email(),
+        age: inp().number().min(18).max(99),
+        friendNames: inp().array(z.string()),
+        // WIP: enum is still in development for Yelix Validation, sorry for that.
+        // country: inp().enum(['USA', 'UK', 'India']), 
       }),
     },
   },

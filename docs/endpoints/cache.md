@@ -40,8 +40,6 @@ Here's a complete example showing cache implementation in an endpoint:
 
 ```ts title="cache-example.ts" {7,12-15,19}
 import type { Ctx, ValidationType } from "@/mod.ts";
-import z from "zod";
-import type { QueryType } from "@/src/types/types.d.ts";
 import { YelixCache } from "@/src/utils/cache.ts";
 
 // Create a cache instance for storing strings
@@ -68,7 +66,7 @@ export const middlewares = ["dataValidation"];
 
 export const validation: ValidationType = {
   query: {
-    name: z.string().min(1).required(),
+    name: inp().string().min(1),
   },
 };
 ```
