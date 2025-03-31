@@ -5,12 +5,12 @@ import type * as Preset from '@docusaurus/preset-classic';
 // This runs in Node.js - Don't use client-side code here (browser APIs, JSX...)
 
 const config: Config = {
-  title: 'Yelix',
-  tagline: 'Yelix Documentation',
+  title: 'Yelix – Deno Web Framework',
+  tagline: 'Yelix – Deno Web Framework',
   favicon: 'img/favicon.ico',
 
   // Set the production url of your site here
-  url: 'https://your-docusaurus-site.example.com',
+  url: 'https://yelix-docs.deno.dev/',
   // Set the /<baseUrl>/ pathname under which your site is served
   // For GitHub pages deployment, it is often '/<projectName>/'
   baseUrl: '/',

@@ -30,11 +30,9 @@ function HomepageHeader() {
 }
 
 export default function Home(): ReactNode {
-  const {siteConfig} = useDocusaurusContext();
   return (
     <Layout
-      title={`Hello from ${siteConfig.title}`}
-      description="Description will go into a meta tag in <head />">
+      description="Yelix is a fast, lightweight web framework for Deno, built on Hono. It offers built-in data validation, OpenAPI 3.1 support, and automated backend documentation. Simplify your API development with Yelix!">
       <LandingPage />
     </Layout>
   );
