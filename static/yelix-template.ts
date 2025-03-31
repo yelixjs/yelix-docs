@@ -39,12 +39,18 @@ export async function GET(ctx: Ctx) {
 export const path = '/api/hello';
 `.trim();
 
+// NEXT_LINE: WRITE_ACCESS
 await Deno.writeTextFile("deno.json", deno_json);
+// NEXT_LINE: WRITE_ACCESS
 await Deno.writeTextFile("main.ts", main_ts);
+
+// NEXT_LINE: READ_ACCESS
 const isAPIExist = await exists("./api"); 
 if (!isAPIExist) {
+  // NEXT_LINE: WRITE_ACCESS
   await Deno.mkdir("api");
 }
+// NEXT_LINE: WRITE_ACCESS
 await Deno.writeTextFile("api/hello.ts", helloAPI_ts);
 
 console.log('');
