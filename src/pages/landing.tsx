@@ -254,13 +254,13 @@ export const validation: ValidationType = {
             </div>
             <div className={styles.getStartedContainer}>
               <div className={styles.stepCard}>
-                <h3 className={styles.stepTitle}>1. Install Yelix</h3>
+                <h3 className={styles.stepTitle}>1. Generate Template</h3>
                 <pre className={styles.codeBlock}>
-                  <code>deno add jsr:@murat/yelix</code>
+                  <code>deno run --allow-write --allow-read https://yelix-docs.deno.dev/yelix-template.ts</code>
                 </pre>
               </div>
 
-              <div className={styles.stepCard}>
+              {/* <div className={styles.stepCard}>
                 <h3 className={styles.stepTitle}>2. Create Your First App</h3>
 
                 <div className={styles.codeBlock}>
@@ -285,18 +285,13 @@ async function main() {
 await main();`}
                   </SyntaxHighlighter>
                 </div>
-              </div>
+              </div> */}
 
               <div className={styles.stepCard}>
-                <h3 className={styles.stepTitle}>3. Run Your App</h3>
+                <h3 className={styles.stepTitle}>2. Run Your App</h3>
                 <pre className={styles.codeBlock}>
-                  <code>deno run --watch --allow-net --allow-env main.ts</code>
+                  <code>deno task dev</code>
                 </pre>
-                <ul>
-                  <li><kbd>--watch:</kbd> Automatically reloads server when changes are made</li>
-                  <li><kbd>--allow-net:</kbd> Permits network access for serving</li>
-                  <li><kbd>--allow-env:</kbd> Checking where is deployed for Deno Deploy</li>
-                </ul>
               </div>
 
               <div className={styles.buttonContainer}>

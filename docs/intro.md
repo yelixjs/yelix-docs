@@ -4,7 +4,7 @@ sidebar_position: 1
 
 # Tutorial Intro
 
-Let's discover **Yelix in less than 5 minutes**.
+Let's discover **Yelix in less than 1 minutes**.
 
 ## Getting Started
 
@@ -16,98 +16,38 @@ Get started by **creating a new server**.
 
 ## Generate a new server
 
-To generate a new server, we should init before.
+To generate a new server, run the following command:
 
 ```bash
-deno init my-app
+deno run --allow-write --allow-read https://yelix-docs.deno.dev/yelix-template.ts
 ```
 
-You can type this command into Command Prompt, Powershell, Terminal, or any other integrated terminal of your code editor.
+This command will create a new Yelix project with the following structure:
 
-Move into the newly created directory:
-
-```bash
-cd my-app
+```
+ api/
+ └── hello.ts
+ deno.json
+ main.ts
 ```
 
-### Install Yelix
+### Generated Files
 
-To install Yelix, run the following command:
+| File | Purpose | Description |
+|------|---------|-------------|
+| `deno.json` | Project Configuration | Contains development tasks and project settings. Defines the `dev` command used to run the server. |
+| `main.ts` | Server Setup | Entry point of the application. Initializes Yelix server and configures endpoint loading from the `api` folder. |
+| `api/hello.ts` | Example Endpoint | Demonstrates a basic API endpoint that returns "Hello World!" when accessed at `/api/hello`. Shows the standard endpoint structure. |
 
-```bash
-deno add jsr:@murat/yelix
-```
-
-This command installs the Yelix package into your project.
-
-### Update your main file
-
-Open the `main.ts` file in your project and add the following code:
-
-`./main.ts`
-```typescript
-import { Yelix } from "jsr:@murat/yelix";
-import * as path from "jsr:@std/path@1.0.8";
-
-async function main() {
-  // Port is 3030 by default
-  const app = new Yelix();
-
-  // Load endpoints from a 'api' folder
-  const currentDir = Deno.cwd();
-  const API_Folder = path.join(currentDir, 'api');
-  await app.loadEndpointsFromFolder(API_Folder);
-
-  app.serve();
-}
-
-await main();
-```
-
-This code imports the Yelix package and creates a new server instance. It then loads endpoints from a folder and serves the application.
-
-:::caution
-
-Deno Deploy doesn't support `loadEndpointsFromFolder` method, if you want to deploy your app on Deno Deploy, you should use `loadEndpoints` method.
-
-Deno Deploy doesn't access dynamic importing because of security reasons.
-
-:::
-
-### Create an API folder
-
-Create a new folder named `api` in your project directory. Inside this folder, create a new file named `hello.ts` with the following content:
-
-`./api/hello.ts`
-```typescript
-import type { Ctx } from "jsr:@murat/yelix";
-
-// API endpoint handler
-export async function GET(ctx: Ctx) {
-  return await ctx.text('Hello World!', 200);
-}
-
-// API endpoint configs
-export const path = '/api/hello';
-```
-
-- Method: `GET` - Taken from the function name
-- Path: `/api/hello` - Defined in the `path` variable
-- Response: `Hello World!` - Returned by the `GET` function
-
-## Start your site
+### Start your server
 
 Run the development server:
 
 ```bash
-deno run --watch --allow-net --allow-read --allow-env main.ts
+deno task dev
 ```
 
-- `--watch` - Automatically reloads the server when changes are made
-- `--allow-net` - Allows network access for serving the server
-- `--allow-read` - Allows file read access for loading endpoints
-- `--allow-env` - Checking where is deployed for Deno Deploy
-
+This command will start your server in development mode with all required permissions.
 
 | Description | URL |
 |------------|-----|
