@@ -15,9 +15,6 @@ import { Yelix, requestDataValidationYelixMiddleware } from 'jsr:@murat/yelix';
 
 export async function startServer() {
   const app = new Yelix();
-
-  // Load your endpoints here
-
   app.setMiddleware('dataValidation', requestDataValidationYelixMiddleware);
   app.serve();
 }
@@ -30,21 +27,66 @@ await startServer();
 ```ts title="hello.ts"
 import { Ctx, ValidationType, inp } from "jsr:@murat/yelix";
 
-export async function GET(ctx: Ctx) {
+export async function POST(ctx: Ctx) {
   const requestData = ctx.get('dataValidation').user;
-  const { name } = requestData.query;
-  return await ctx.text(`Hello, ${name}!`, 200);
+  const { username, email } = requestData.body;
+  return await ctx.text(`Hello, ${username}!`, 200);
 }
 
 export const path = '/api/hello';
 export const middlewares = ['dataValidation'];
 
 export const validation: ValidationType = {
-  query: {
-    name: inp().string().min(3).max(255)
-  }
+  body: inp().object({
+    username: inp().string().min(3).max(255),
+    email: inp().string().email()
+  })
 };
 ```
+
+<details>
+<summary>
+  **Failed Response**
+</summary>
+
+The response structure is designed to be easily consumable by front-end applications. It presents validation errors in a clear, structured format, grouping errors by field and providing detailed messages for each validation rule that failed.
+
+```json
+{
+  "errors": {
+    "username": [
+      {
+        "message": "This field must be a string and is required.",
+        "key": "username",
+        "from": "body"
+      },
+      {
+        "message": "String must be at least 3 characters long",
+        "key": "username",
+        "from": "body"
+      },
+      {
+        "message": "String must be at most 255 characters long",
+        "key": "username",
+        "from": "body"
+      }
+    ],
+    "email": [
+      {
+        "message": "This field must be a string and is required.",
+        "key": "email",
+        "from": "body"
+      },
+      {
+        "message": "Invalid email address",
+        "key": "email",
+        "from": "body"
+      }
+    ]
+  }
+}
+```
+</details>
 
 ## Available Validators
 
@@ -69,6 +111,8 @@ inp().string()
   .datetime()              // ISO datetime format
   .base64()                // Base64 string
   .optional()              // Make field optional
+  .enum(["admin", "user"])    // Must be one of values
+  .toNumber()                // Convert to number (useful for query params)
 ```
 
 ### Number Validation
@@ -84,6 +128,7 @@ inp().number()
   .finite()                // Must be finite
   .safe()                  // Safe integer
   .optional()              // Make field optional
+  .enum([1, 2, 3, 5])       // Must be one of values
 ```
 
 ### Array Validation
@@ -137,6 +182,7 @@ inp().date()
   .weekday([1,2,3,4,5])        // Valid weekdays
   .age(18)                      // Minimum age
   .optional()                   // Make field optional
+  .enum([new Date("2024-01-01"), new Date("2024-12-31")]) // Must be one of dates
 ```
 
 ### File Validation
@@ -209,14 +255,46 @@ export const validation: ValidationType = {
 };
 ```
 
+## Things To Consider
+
+#### Number validation in query
+
+When validating numbers in query parameters, you can use the `toNumber()` method to convert the string to a number. This is useful for cases where you expect a number but receive it as a string in the query.
+
+```ts
+inp()
+  .string()
+  .toNumber() // Convert string to number but float is allowed
+  .integer()  // Only allow integers
+  .min(1)     // Minimum value
+```
+
+#### Validation Context Differences (query, body, formData)
+
+Understanding how validation works across different contexts is crucial:
+
+- **query**: Uses direct object notation for URL parameters
+- **body**: Requires `inp().object()` wrapper since it handles JSON payloads
+- **formData**: Uses direct object notation for form data fields
+
+```ts
+export const validation: ValidationType = {
+  query: {},
+  // highlight-next-line
+  body: inp().object({ }),
+  formData: {}
+}
+```
+
 ## Complete Example
 
 ```ts
 export const validation: ValidationType = {
   query: {
-    page: inp().number().integer().min(1).optional(),
-    limit: inp().number().integer().range(1, 100),
-    isActive: inp().boolean().transform()  // Accepts "true", "1", true, etc.
+    page: inp().string().toNumber().integer().min(1).optional(),
+    limit: inp().string().toNumber().integer().range(1, 100),
+    type: inp().string().enum(["user", "admin", "guest"]),
+    userId: inp().string().toNumber().enum([1, 2, 3, 4, 5])
   },
   body: inp().object({
     username: inp().string().min(3).max(255),
