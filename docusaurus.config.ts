@@ -82,7 +82,7 @@ const config: Config = {
         },
         // {to: '/blog', label: 'Blog', position: 'left'},
         {
-          href: 'https://github.com/GroophyLifefor/yelix',
+          href: 'https://github.com/yelixjs/yelix',
           label: 'GitHub',
           position: 'right',
         },

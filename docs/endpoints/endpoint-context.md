@@ -98,7 +98,7 @@ Redirect to another URL. Default status code is `302`.
 export async function GET(ctx: Ctx) {
   return await 
     ctx.redirect(
-      'https://github.com/GroophyLifefor/yelix'
+      'https://github.com/yelixjs/yelix'
     );
 }
 ```
@@ -109,7 +109,7 @@ You can also set the status code.
 export async function GET(ctx: Ctx) {
   return await 
     ctx.redirect(
-      'https://github.com/GroophyLifefor/yelix',
+      'https://github.com/yelixjs/yelix',
       301
     );
 }

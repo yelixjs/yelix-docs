@@ -68,7 +68,7 @@ export default function LandingPage() {
                     Get Started <ArrowRight className={styles.buttonIcon} />
                   </a>
                   <a
-                    href="https://github.com/GroophyLifefor/yelix"
+                    href="https://github.com/yelixjs/yelix"
                     target="_blank"
                     className={styles.secondaryButtonLarge}
                   >
@@ -338,7 +338,7 @@ await main();`}
               </a>
 
               <a
-                href="https://github.com/GroophyLifefor/yelix"
+                href="https://github.com/yelixjs/yelix"
                 className={styles.docCard}
               >
                 <div className={styles.docIconContainer}>
@@ -376,7 +376,7 @@ await main();`}
           </p>
           <div className={styles.footerLinks}>
             <a
-              href="https://github.com/GroophyLifefor/yelix"
+              href="https://github.com/yelixjs/yelix"
               className={styles.footerLink}
             >
               GitHub
