@@ -22,6 +22,8 @@ export async function main() {
   await app.loadEndpointsFromFolder(API_Folder);
 
   app.serve();
+
+  return app;
 }
 
 await main();
