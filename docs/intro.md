@@ -19,7 +19,7 @@ Get started by **creating a new server**.
 To generate a new server, run the following command:
 
 ```bash
-deno run --allow-write --allow-read https://yelix.dev/yelix-template.ts
+deno run --allow-write --allow-read https://docs.yelix.dev/yelix-template.ts
 ```
 
 This command will create a new Yelix project with the following structure:
