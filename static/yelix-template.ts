@@ -58,7 +58,7 @@ new Deno.Command("deno", {
     "run",
     "--allow-read",
     "--allow-write",
-    "https://docs.yelix.dev/resolveEndpoints.ts",
+    "https://docs.yelix.dev/resolveEndpoints.ts?noCache=" + Date.now().getTime(),
     "--folder",
     "api",
   ],
