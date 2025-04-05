@@ -62,9 +62,9 @@ new Deno.Command("deno", {
     "--folder",
     "api",
   ],
-  stdin: "null",
-  stdout: "piped",
-  stderr: "piped",
+  stdin: "inherit",
+  stdout: "inherit",
+  stderr: "inherit",
 }).spawn();
 
 console.log('');
