@@ -256,7 +256,7 @@ export const validation: ValidationType = {
               <div className={styles.stepCard}>
                 <h3 className={styles.stepTitle}>1. Generate Template</h3>
                 <pre className={styles.codeBlock}>
-                  <code>deno run --allow-write --allow-read https://docs.yelix.dev/yelix-template.ts</code>
+                  <code>deno run --allow-write --allow-read --allow-run https://docs.yelix.dev/yelix-template.ts</code>
                 </pre>
               </div>
 
