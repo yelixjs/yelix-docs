@@ -64,10 +64,6 @@ async function generateEndpointsFile() {
 }
 
 async function watch() {
-  const isWatch = getIsWatchFromArgs();
-  if (!isWatch) {
-    return;
-  }
   console.log("[resolveEndpoints] watching for changes...");
 
   const watcher = Deno.watchFs(Deno.cwd());
@@ -76,22 +72,22 @@ async function watch() {
     const fileName = path.basename(filePath);
     if (event.kind === "modify" && fileName !== "endpoints.ts") {
       console.log("[resolveEndpoints] file modified" ,fileName);
-      generateEndpointsFile();
+      await generateEndpointsFile();
+      console.log("[resolveEndpoints] generated endpoints.ts");
     }
   }
 }
 
 async function main() {
   await generateEndpointsFile();
-  const isWatch = getIsWatchFromArgs();
   console.log("[resolveEndpoints] generated endpoints.ts");
+  
+  const isWatch = getIsWatchFromArgs();
   console.log("[resolveEndpoints] watch mode:", isWatch ? "on" : "off");
   
-  if (!isWatch) {
-    Deno.exit(0);
+  if (isWatch) {
+    await watch();
   }
-  
-  await watch();
 }
 
 main();
