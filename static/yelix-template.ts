@@ -10,18 +10,16 @@ const deno_json = `
 
 const main_ts = `
 import { Yelix } from "jsr:@murat/yelix";
-import * as path from "jsr:@std/path@1.0.8";
+import endpoints from "./endpoints.ts";
 
 export async function main() {
   // Port is 3030 by default
   const app = new Yelix();
 
   // Load endpoints from a 'api' folder
-  const currentDir = Deno.cwd();
-  const API_Folder = path.join(currentDir, 'api');
-  await app.loadEndpointsFromFolder(API_Folder);
+  app.loadEndpoints(endpoints);
 
-  app.serve();
+  await app.serve();
 
   return app;
 }
@@ -54,6 +52,20 @@ if (!isAPIExist) {
 }
 // NEXT_LINE: WRITE_ACCESS
 await Deno.writeTextFile("api/hello.ts", helloAPI_ts);
+
+new Deno.Command("deno", {
+  args: [
+    "run",
+    "--allow-read",
+    "--allow-write",
+    "https://docs.yelix.dev/resolveEndpoints.ts",
+    "--folder",
+    "api",
+  ],
+  stdin: "null",
+  stdout: "piped",
+  stderr: "piped",
+}).spawn();
 
 console.log('');
 console.log('- Your Yelix project is generated, let\'s run your project!');

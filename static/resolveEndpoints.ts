@@ -30,6 +30,11 @@ function getFolderFromArgs(): string {
   return targetFolder;
 }
 
+function getIsWatchFromArgs(): boolean {
+  const args = parseArgs(Deno.args);
+  return args.watch || args.w || false;
+}
+
 function generateImportStatement(filePath: string, basePath: string): string {
   const relativePath = "." + filePath
     .replace(basePath, "")
@@ -59,6 +64,12 @@ async function generateEndpointsFile() {
 }
 
 async function watch() {
+  const isWatch = getIsWatchFromArgs();
+  if (!isWatch) {
+    return;
+  }
+  console.log("[resolveEndpoints] watching for changes...");
+
   const watcher = Deno.watchFs(Deno.cwd());
   for await (const event of watcher) {
     const filePath = event.paths[0];

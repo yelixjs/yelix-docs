@@ -8,6 +8,7 @@ const resolveProcess = new Deno.Command("deno", {
     "https://docs.yelix.dev/resolveEndpoints.ts",
     "--folder",
     "api",
+    "--watch",
   ],
   stdin: "null",
   stdout: "piped",
