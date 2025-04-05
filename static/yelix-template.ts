@@ -3,7 +3,7 @@ import { exists } from "jsr:@std/fs/exists";
 const deno_json = `
 {
   "tasks": {
-    "dev": "deno run --watch --allow-net --allow-read --allow-env https://docs.yelix.dev/dev.ts"
+    "dev": "deno run --watch --allow-run --allow-net --allow-read --allow-env https://docs.yelix.dev/dev.ts"
   }
 }
 `.trim();
