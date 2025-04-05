@@ -84,6 +84,8 @@ async function watch() {
 async function main() {
   await generateEndpointsFile();
   const isWatch = getIsWatchFromArgs();
+  console.log("[resolveEndpoints] generated endpoints.ts");
+  console.log("[resolveEndpoints] watch mode:", isWatch ? "on" : "off");
   
   if (!isWatch) {
     Deno.exit(0);
