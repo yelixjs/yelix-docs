@@ -81,5 +81,15 @@ async function watch() {
   }
 }
 
-generateEndpointsFile();
-watch();
+async function main() {
+  await generateEndpointsFile();
+  const isWatch = getIsWatchFromArgs();
+  
+  if (!isWatch) {
+    Deno.exit(0);
+  }
+  
+  await watch();
+}
+
+main();
