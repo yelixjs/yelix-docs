@@ -197,6 +197,12 @@ inp().file()
   .optional()              // Make field optional
 ```
 
+### Any Validation
+```ts
+inp().any()               // Accept any type
+  .optional()             // Make field optional
+```
+
 ### Custom Validations
 ```ts title="validation/superString.ts"
 // deno-lint-ignore-file no-explicit-any

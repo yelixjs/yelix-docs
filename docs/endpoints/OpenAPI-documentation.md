@@ -158,8 +158,7 @@ export const openAPI = {
         email: inp().string().email(),
         age: inp().number().min(18).max(99),
         friendNames: inp().array(z.string()),
-        // WIP: enum is still in development for Yelix Validation, sorry for that.
-        // country: inp().enum(['USA', 'UK', 'India']), 
+        country: inp().string().enum(['USA', 'UK', 'India']), 
       }),
     },
   },
