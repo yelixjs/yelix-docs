@@ -1,11 +1,11 @@
-import { parseArgs } from "jsr:@std/cli/parse-args";
-import * as path from "jsr:@std/path@1.0.8";
+import { parseArgs } from 'jsr:@std/cli/parse-args';
+import * as path from 'jsr:@std/path@1.0.8';
 
-console.log("[resolveEndpoints] running at", new Date().toISOString());
+console.log('[resolveEndpoints] running at', new Date().toISOString());
 
 async function walkDirectory(
   directoryPath: string,
-  fileHandler: (args: { path: string; fileInfo: Deno.FileInfo }) => void,
+  fileHandler: (args: { path: string; fileInfo: Deno.FileInfo }) => void
 ) {
   const fileInfo = await Deno.lstat(directoryPath);
   fileHandler({ fileInfo, path: directoryPath });
@@ -23,7 +23,7 @@ function getFolderFromArgs(): string {
   const targetFolder = args.folder || args.f;
 
   if (!targetFolder) {
-    console.error("Please provide a folder name using --folder or -f.");
+    console.error('Please provide a folder name using --folder or -f.');
     Deno.exit(1);
   }
 
@@ -36,10 +36,9 @@ function getIsWatchFromArgs(): boolean {
 }
 
 function generateImportStatement(filePath: string, basePath: string): string {
-  const relativePath = "." + filePath
-    .replace(basePath, "")
-    .replaceAll("\\", "/")
-    .replaceAll("//", "/");
+  const relativePath =
+    '.' +
+    filePath.replace(basePath, '').replaceAll('\\', '/').replaceAll('//', '/');
   return `  await import("${relativePath}"),\n`;
 }
 
@@ -48,43 +47,44 @@ async function generateEndpointsFile() {
   const targetFolder = getFolderFromArgs();
   const rootPath = path.join(currentDir, targetFolder);
 
-  let endpointsContent = "const endpoints = [\n";
+  let endpointsContent = 'const endpoints = [\n';
 
   await walkDirectory(rootPath, (file) => {
-    if (file.fileInfo.isFile) {
+    const extension = path.extname(file.path);
+    if (file.fileInfo.isFile && (extension === '.ts' || extension === '.js')) {
       endpointsContent += generateImportStatement(file.path, currentDir);
     }
   });
 
-  endpointsContent += "\n];\nexport default endpoints;\n";
+  endpointsContent += '\n];\nexport default endpoints;\n';
   await Deno.writeTextFile(
-    path.join(currentDir, "endpoints.ts"),
-    endpointsContent,
+    path.join(currentDir, 'endpoints.ts'),
+    endpointsContent
   );
 }
 
 async function watch() {
-  console.log("[resolveEndpoints] watching for changes...");
+  console.log('[resolveEndpoints] watching for changes...');
 
   const watcher = Deno.watchFs(Deno.cwd());
   for await (const event of watcher) {
     const filePath = event.paths[0];
     const fileName = path.basename(filePath);
-    if (event.kind === "modify" && fileName !== "endpoints.ts") {
-      console.log("[resolveEndpoints] file modified" ,fileName);
+    if (event.kind === 'modify' && fileName !== 'endpoints.ts') {
+      console.log('[resolveEndpoints] file modified', fileName);
       await generateEndpointsFile();
-      console.log("[resolveEndpoints] generated endpoints.ts");
+      console.log('[resolveEndpoints] generated endpoints.ts');
     }
   }
 }
 
 async function main() {
   await generateEndpointsFile();
-  console.log("[resolveEndpoints] generated endpoints.ts");
-  
+  console.log('[resolveEndpoints] generated endpoints.ts');
+
   const isWatch = getIsWatchFromArgs();
-  console.log("[resolveEndpoints] watch mode:", isWatch ? "on" : "off");
-  
+  console.log('[resolveEndpoints] watch mode:', isWatch ? 'on' : 'off');
+
   if (isWatch) {
     await watch();
   }
