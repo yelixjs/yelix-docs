@@ -17,3 +17,8 @@ hola:
   label: Hola
   permalink: /hola
   description: Hola tag description
+
+yelix:
+  label: Yelix
+  permalink: /yelix
+  description: Yelix is a powerful web server library

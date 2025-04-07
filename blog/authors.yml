@@ -21,3 +21,13 @@ slorber:
     linkedin: sebastienlorber
     github: slorber
     newsletter: https://thisweekinreact.com
+
+murat:
+  name: Murat Kirazkaya
+  title: Yelix Maintainer
+  url: https://github.com/GroophyLifefor
+  image_url: https://media.kommunity.com/avatar/929c590a-d8a2-4b86-846d-807b0b109436_avatar_66d35a634d08e.jpg?p=avatar-120
+  page: true
+  socials:
+    linkedin: muratkirazkaya
+    github: GroophyLifefor
