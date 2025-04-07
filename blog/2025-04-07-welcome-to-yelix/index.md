@@ -177,7 +177,6 @@ Yelix is still evolving, but the core idea is solid:
 **Less config, more confidence.**
 
 If that resonates with you, I’d love your feedback or contributions.  
-This is backend development — but with a better safety net.
 
 Stay with Yelix, stay happy! \
 _and enjoy the comfort of being able to deploy on Friday._
