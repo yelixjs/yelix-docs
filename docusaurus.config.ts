@@ -70,7 +70,7 @@ const config: Config = {
     navbar: {
       title: 'Yelix',
       logo: {
-        alt: 'My Site Logo',
+        alt: 'Yelix Logo',
         src: 'img/logo.svg',
       },
       items: [
