@@ -111,7 +111,7 @@ Yelix ships with tools that I wish every framework had:
 </details>
 - **Static endpoint generation**: Perfect for **Deno Deploy** or other edge platforms because _Dynamic Imports are not supported in Deno Deploy._  
   - **Why?**: Deno Deploy is a serverless platform that runs your code in a distributed environment. It doesn't support dynamic imports because they can introduce unpredictability and complexity in a serverless context. Static imports, on the other hand, are resolved at compile time, making them more efficient and predictable for serverless deployments.
-  - **How?**: Yelix generates static endpoints by analyzing your code at build time, ensuring that all necessary modules are included without relying on dynamic imports.
+  - **How?**: Yelix generates static endpoints by analyzing your code at dev time even HMR, ensuring that all necessary modules are included without relying on dynamic imports.
 - **Debug mode**: If a route fails, you get dev-friendly insights before your logger even kicks in
 
 ---
