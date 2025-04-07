@@ -66,7 +66,7 @@ const config: Config = {
 
   themeConfig: {
     // Replace with your project's social card
-    image: 'img/yelix-social-card.jpg',
+    image: 'img/yelix-social-card.png',
     navbar: {
       title: 'Yelix',
       logo: {
