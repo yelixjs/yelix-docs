@@ -13,7 +13,7 @@ async function walkDirectory(
   if (fileInfo.isDirectory) {
     const entries = await Deno.readDir(directoryPath);
     for await (const entry of entries) {
-      await walkDirectory(`${directoryPath}\\${entry.name}`, fileHandler);
+      await walkDirectory(path.join(directoryPath, entry.name), fileHandler);
     }
   }
 }
