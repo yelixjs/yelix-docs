@@ -61,7 +61,7 @@ export async function GET(ctx: Ctx) {
 export const path = "/api/hello-no-cache";
 export const middlewares = ["dataValidation"];
 
-export const validation: ValidationType = {
+export const validation = {
   query: {
     name: inp().string(),
   },
@@ -103,7 +103,7 @@ With the `openAPI` export, you can provide additional information about the endp
 If you don't provide a description, Yelix will generate one for you based on the data validation. For example, if you have a query validation like this:
 
 ```ts title="hello.ts"
-export const validation: ValidationType = {
+export const validation = {
   query: {
     name: inp().string()
     // highlight-next-line

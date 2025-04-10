@@ -41,7 +41,7 @@ if (import.meta.main) {
 Let's look at a complete example of testing a simple endpoint.
 
 ```ts title="endpoints/hello.ts"
-import { Ctx, inp, ValidationType } from 'jsr:@murat/yelix';
+import { Ctx, inp } from 'jsr:@murat/yelix';
 
 export async function GET(ctx: Ctx) {
   const requestData = ctx.get('dataValidation').user;
@@ -54,7 +54,7 @@ export async function GET(ctx: Ctx) {
 export const path = '/api/hello';
 export const middlewares = ['dataValidation'];
 
-export const validation: ValidationType = {
+export const validation = {
   query: {
     name: inp().string().min(3),
   },

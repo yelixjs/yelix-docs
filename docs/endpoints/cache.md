@@ -39,7 +39,7 @@ const value = cache.get(null, "greeting");
 Here's a complete example showing cache implementation in an endpoint:
 
 ```ts title="cache-example.ts" {7,12-15,19}
-import type { Ctx, ValidationType } from "@/mod.ts";
+import type { Ctx } from "@/mod.ts";
 import { YelixCache } from "@/src/utils/cache.ts";
 
 // Create a cache instance for storing strings
@@ -64,7 +64,7 @@ export async function GET(ctx: Ctx) {
 export const path = "/api/hello";
 export const middlewares = ["dataValidation"];
 
-export const validation: ValidationType = {
+export const validation = {
   query: {
     name: inp().string().min(1),
   },

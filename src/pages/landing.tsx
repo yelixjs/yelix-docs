@@ -55,7 +55,7 @@ export default function LandingPage() {
               <div className={styles.heroContent}>
                 <div className={styles.heroTextContainer}>
                   <h1 className={styles.heroTitle}>
-                    Yelix: The Modern Web Server Library for Deno
+                    Yelix: The Modern Web Server Framework for Deno
                   </h1>
                   <p className={styles.heroDescription}>
                     Simplify your backend development with automated features,
@@ -77,6 +77,9 @@ export default function LandingPage() {
                 </div>
               </div>
               <div className={styles.codeCard}>
+                <div className={styles.codeBottomText}>
+                  The simplest and most customizable web server framework for Deno.
+                </div>
                 <div className={styles.codeHeader}>
                   <div className={styles.codeDots}>
                     <div className={styles.redDot}></div>
@@ -87,22 +90,14 @@ export default function LandingPage() {
                 </div>
                 <div className={styles.codeBlock}>
                   <SyntaxHighlighter language="typescript" style={codeStyle}>
-                    {`import { Yelix } from "jsr:@murat/yelix";
-import * as path from "jsr:@std/path@1.0.8";
+                    {`import { Yelix } from 'jsr:@murat/yelix';
+import endpoints from './endpoints.ts';
 
-async function main() {
-  // Port is 3030 by default
-  const app = new Yelix();
+const app = new Yelix();
 
-  // Load endpoints from a 'api' folder
-  const currentDir = Deno.cwd();
-  const API_Folder = path.join(currentDir, 'api');
-  await app.loadEndpointsFromFolder(API_Folder);
+app.loadEndpoints(endpoints);
 
-  app.serve();
-}
-
-await main();`}
+await app.serve();`}
                   </SyntaxHighlighter>
                 </div>
               </div>
@@ -219,11 +214,10 @@ export const path = '/api/hello';
 
                 <div className={styles.codeBlock}>
                   <SyntaxHighlighter language="typescript" style={codeStyle}>
-                    {`import { Ctx, ValidationType } from "jsr:@murat/yelix";
+                    {`import { Ctx, getValidatedQuery, Infer } from "jsr:@murat/yelix";
 
 export async function GET(ctx: Ctx) {
-  const requestData = ctx.get('dataValidation').user;
-  const query = requestData.query;
+  const query = getValidatedQuery<Infer<typeof validation.query>(ctx);
 
   return await ctx.text('Hello, ' + query.name, 200);
 }
@@ -231,7 +225,7 @@ export async function GET(ctx: Ctx) {
 export const path = '/api/hello';
 export const middlewares = ['dataValidation'];
 
-export const validation: ValidationType = {
+export const validation = {
   query: {
     name: inp().string(),
   },

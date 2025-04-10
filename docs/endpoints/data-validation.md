@@ -25,18 +25,17 @@ await startServer();
 ## Basic Example
 
 ```ts title="hello.ts"
-import { Ctx, ValidationType, inp } from "jsr:@murat/yelix";
+import { Ctx, Infer, getValidatedBody, inp } from "jsr:@murat/yelix";
 
 export async function POST(ctx: Ctx) {
-  const requestData = ctx.get('dataValidation').user;
-  const { username, email } = requestData.body;
+  const { username, email } = getValidatedBody<Infer<typeof validation.body.subFields>>(ctx);
   return await ctx.text(`Hello, ${username}!`, 200);
 }
 
 export const path = '/api/hello';
 export const middlewares = ['dataValidation'];
 
-export const validation: ValidationType = {
+export const validation = {
   body: inp().object({
     username: inp().string().min(3).max(255),
     email: inp().string().email()
@@ -87,6 +86,44 @@ The response structure is designed to be easily consumable by front-end applicat
 }
 ```
 </details>
+
+## Available Middleware Functions
+
+- `getValidatedQuery<T>(ctx: Ctx)` - Validates and retrieves query parameters.
+- `getValidatedBody<T>(ctx: Ctx)` - Validates and retrieves the request body.
+- `getValidatedFormData<T>(ctx: Ctx)` - Validates and retrieves form data.
+
+### Each usage example is as follows:
+
+```ts title="hello.ts"
+import { Ctx, Infer, getValidatedQuery, getValidatedBody, getValidatedFormData } from "jsr:@murat/yelix";
+
+export async function GET(ctx: Ctx) {
+  const query = getValidatedQuery<Infer<typeof validation.query>>(ctx);
+  const body = getValidatedBody<Infer<typeof validation.body.subFields>>(ctx);
+  const formData = getValidatedFormData<Infer<typeof validation.formData>>(ctx);
+
+  return await ctx.text(`Hello, world!`, 200);
+}
+
+export const path = '/api/hello';
+export const middlewares = ['dataValidation'];
+
+export const validation = {
+  query: {
+    username: inp().string().min(3).max(255),
+    email: inp().string().email()
+  },
+  body: inp().object({
+    username: inp().string().min(3).max(255),
+    email: inp().string().email()
+  }),
+  formData: inp().object({
+    username: inp().string().min(3).max(255),
+    email: inp().string().email()
+  })
+};
+```
 
 ## Available Validators
 
@@ -242,19 +279,18 @@ export { SuperString, superString };
 ```
 
 ```ts title="hello.ts"
-import { Ctx, ValidationType } from "jsr:@murat/yelix";
+import { Ctx, Infer, getValidatedQuery } from "jsr:@murat/yelix";
 import { superString } from "../validation/customValidation.ts";
 
 export async function GET(ctx: Ctx) {
-  const requestData = ctx.get('dataValidation').user;
-  const { name } = requestData.query;
+  const { name } = getValidatedQuery<Infer<typeof validation.query>>(ctx);
   return await ctx.text(`Hello, ${name}!`, 200);
 }
 
 export const path = '/api/customValidation';
 export const middlewares = ['dataValidation'];
 
-export const validation: ValidationType = {
+export const validation = {
   query: {
     userId: superString().trim().isUserID(),
   }
@@ -284,7 +320,7 @@ Understanding how validation works across different contexts is crucial:
 - **formData**: Uses direct object notation for form data fields
 
 ```ts
-export const validation: ValidationType = {
+export const validation = {
   query: {},
   // highlight-next-line
   body: inp().object({ }),
@@ -292,10 +328,23 @@ export const validation: ValidationType = {
 }
 ```
 
+Also infer-ing the validation object is different for each context:
+Since `body` is an object, you need to use `subFields` to get the correct type.
+
+- **query**: `validation.query`
+- **body**: `validation.body.subFields`
+- **formData**: `validation.formData`
+
+```ts
+const query = getValidatedQuery<Infer<typeof validation.query>>(ctx);
+const body = getValidatedBody<Infer<typeof validation.body.subFields>>(ctx);
+const formData = getValidatedFormData<Infer<typeof validation.formData>>(ctx);
+```
+
 ## Complete Example
 
 ```ts
-export const validation: ValidationType = {
+export const validation = {
   query: {
     page: inp().string().toNumber().integer().min(1).optional(),
     limit: inp().string().toNumber().integer().range(1, 100),

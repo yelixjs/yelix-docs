@@ -341,6 +341,7 @@ html, body {
   padding: 1rem;
   box-shadow: var(--card-shadow);
   overflow-x: auto;
+  position: relative;
 }
 
 @media (max-width: 768px) {
@@ -388,6 +389,7 @@ html, body {
   border-radius: 0.375rem;
   font-size: 0.875rem;
   font-family: monospace;
+  padding-bottom: 8px;
 }
 
 @media (max-width: 768px) {
@@ -859,4 +861,12 @@ html, body {
 .stepTitle,
 .docTitle {
   color: var(--text-primary);
+}
+
+.codeBottomText {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  padding: 16px 8px 8px 8px;
+  font-size: small;
 }

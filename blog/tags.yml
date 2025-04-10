@@ -21,4 +21,4 @@ hola:
 yelix:
   label: Yelix
   permalink: /yelix
-  description: Yelix is a powerful web server library
+  description: Yelix is a powerful web server framework
