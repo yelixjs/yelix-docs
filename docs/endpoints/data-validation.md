@@ -89,6 +89,9 @@ The response structure is designed to be easily consumable by front-end applicat
 
 ## Available Middleware Functions
 
+Middleware functions are used to validate incoming requests. They are automatically applied to all endpoints that include the `dataValidation` middleware. \
+Thank to [Ezequiel](https://github.com/ingEze).
+
 - `getValidatedQuery<T>(ctx: Ctx)` - Validates and retrieves query parameters.
 - `getValidatedBody<T>(ctx: Ctx)` - Validates and retrieves the request body.
 - `getValidatedFormData<T>(ctx: Ctx)` - Validates and retrieves form data.
