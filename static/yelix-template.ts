@@ -3,28 +3,33 @@ import { exists } from "jsr:@std/fs/exists";
 const deno_json = `
 {
   "tasks": {
-    "dev": "deno run --watch --allow-run --allow-net --allow-read --allow-env https://docs.yelix.dev/dev.ts"
+    "dev": "deno run --watch-hmr --allow-run --allow-net --allow-read --allow-write --allow-env main.ts --yelix-seg ./api --yelix-sego ./endpoints.ts"
   }
 }
 `.trim();
 
 const main_ts = `
-import { Yelix } from "jsr:@murat/yelix";
+import { Yelix, type OptionalAppConfigType } from "jsr:@murat/yelix";
 import endpoints from "./endpoints.ts";
 
-export async function main() {
+export async function main(config?: OptionalAppConfigType) {
   // Port is 3030 by default
-  const app = new Yelix();
+  const yelixConfig: OptionalAppConfigType = {
+    environment: 'dev'
+  };
+
+  const app = new Yelix(config || yelixConfig);
 
   // Load endpoints from a 'api' folder
   app.loadEndpoints(endpoints);
 
   await app.serve();
-
   return app;
 }
 
-await main();
+if (import.meta.main) {
+  await main();
+}
 `.trim();
 
 const helloAPI_ts = `

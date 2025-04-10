@@ -4,63 +4,83 @@ sidebar_position: 1
 
 # Watching Folder
 
-Yelix supports watching a folder for changes. This is useful for development purposes, as it allows you to see changes in real-time without having to restart the server manually.
-Yelix will automatically reload the server when it detects changes in the specified folder.
+Yelix allows you to monitor a folder for changes, making it easier to develop applications. With this feature, you can see updates in real-time without manually restarting the server. When changes are detected in the specified folder, Yelix automatically reloads the server.
 
-```ts title="main.ts"
-import { Yelix } from 'jsr:@murat/yelix';
-import * as path from 'jsr:@std/path@1.0.8';
+## How to Enable Watching
 
-async function main() {
-  const currentDir = Deno.cwd();
-  const API_Folder = path.join(currentDir, 'api');
+To enable folder watching, add the `--watch-hmr` flag to your `deno.json` file. This flag activates the watch mode for the folder.
 
-  const app = new Yelix({
-    // highlight-next-line
-    watchDirectory: API_Folder,
+```json
+{
+  "tasks": {
+    "dev": "deno run --watch-hmr --allow-run --allow-net --allow-read --allow-write --allow-env main.ts"
+  }
+}
+```
+
+## Combining with Static Endpoint Generation (SEG)
+
+Yelix works seamlessly with `Deno`, `Deno Deploy`, and `Hono`. However, since Deno Deploy does not support the `loadEndpointsFromFolder` function (due to its lack of dynamic import support), Yelix offers a feature called Static Endpoint Generation (SEG). This feature generates endpoints during development and is compatible with Hot Module Replacement (HMR).
+
+### SEG Options
+
+| Short Option   | Full Option                                 | Description                      | Default Value    |
+| -------------- | ------------------------------------------- | -------------------------------- | ---------------- |
+| `--yelix-seg`  | `--yelix-static-endpoint-generation`        | Folder to monitor for changes    | `./api`          |
+| `--yelix-sego` | `--yelix-static-endpoint-generation-output` | File to save generated endpoints | `./endpoints.ts` |
+
+### Using SEG
+
+Here’s an example configuration for SEG:
+
+```json
+// DO NOT COPY, TASK SCRIPT SHOULD NOT INCLUDE NEWLINE
+{
+  "tasks": {
+    "dev": "
+      deno run
+      --watch-hmr
+      --allow-run --allow-net --allow-read --allow-write --allow-env
+      main.ts
+      --yelix-static-endpoint-generation ./api
+      --yelix-static-endpoint-generation-output ./endpoints.ts"
+  }
+}
+```
+
+If you use the default folder (`./api`) or output file (`./endpoints.ts`), you can omit the `--yelix-static-endpoint-generation` flag, as the defaults will be applied automatically.
+
+### How it looks in Yelix
+
+```ts
+import { Yelix, type OptionalAppConfigType } from 'jsr:@murat/yelix';
+import endpoints from './endpoints.ts';
+
+export async function main(config?: OptionalAppConfigType) {
+  // Port is 3030 by default
+  const yelixConfig: OptionalAppConfigType = {
     environment: 'dev',
-    serverPort: 3030,
-  });
+  };
 
-  await app.loadEndpointsFromFolder(API_Folder);
+  const app = new Yelix(config || yelixConfig);
 
-  app.serve();
+  // Old way to load endpoints from folder
+  // await app.loadEndpointsFromFolder('./api');
+
+  // New way to load endpoints from file
+  app.loadEndpoints(endpoints);
+
+  await app.serve();
+  return app;
 }
 
-await main();
+if (import.meta.main) {
+  await main();
+}
 ```
 
-### Output
+### Important Notes
 
-```js title="Terminal"
-
-  Hi there! Welcome to Yelix                                                                    
-  I'm the maintainer of this project, and if you use Yelix for an open-source project.          
-  I would love to review your codebase and analyze where I can improve it.                      
-  Please Submit an issue on the GitHub repository with the title "Used Yelix in my project"     
-  To not get this message again, set the `noWelcome` option to true in the Yelix constructor.   
-                                                                                                
-
-   𝕐 Yelix  0.1.32
-   - Local       :   http://localhost:3030
-   - Watching    :   ./api
-   - Environment :   dev
-
-⊚ [modify] \hello.ts
-╓  Restarting server...
-╙  Server restarted successfully in 12 ms (+200ms debounce)
-```
-
-### When to Use It
-
-For an example you have an mongodb connection that averagely takes 40 seconds to connect, because that is my problem too, if you wanna reload your endpoints but not other files. You can use the `watchDirectory` option to watch a specific folder. This way, you can reload your endpoints without having to restart the server completely. This is useful for development purposes, as it allows you to see changes in real-time without having to restart the server manually.
-
-But you can't use Deno's `--watch` flag with `watchDirectory`, because it will not work as expected. So you have to use the `watchDirectory` option instead.
-
-```python
-# Remove the --watch flag from the command line
-# deno run --watch --allow-net --allow-read --allow-env ./main.ts
-
-  deno run --allow-net --allow-read --allow-env ./main.ts
-
-```
+- **File Watching**: The `--watch-hmr` flag enables file watching, allowing Yelix to detect changes in the specified folder and reload the server automatically.
+- **Static Endpoint Generation**: The `--yelix-static-endpoint-generation` flag specifies the folder to monitor for changes, while the `--yelix-static-endpoint-generation-output` flag specifies the file where the generated endpoints will be saved.
+- **Compatibility**: This feature is compatible with `Deno`, `Deno Deploy`, and `Hono`. However, the `loadEndpointsFromFolder` function is not supported in Deno Deploy due to its lack of dynamic import support. Instead, use the SEG feature to generate endpoints during development.
