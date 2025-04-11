@@ -24,7 +24,7 @@ const FeatureList: FeatureItem[] = [
     Svg: require('@site/static/img/undraw_docusaurus_tree.svg').default,
     description: (
       <>
-        With built-in Zod validation, Yelix ensures data integrity by automatically validating query parameters and request bodies before processing them.
+        With built-in Data Validation, Yelix ensures data integrity by automatically validating query parameters and request bodies before processing them.
       </>
     ),
   },

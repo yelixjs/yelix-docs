@@ -131,7 +131,7 @@ await app.serve();`}
                 </div>
                 <h3 className={styles.featureTitle}>Data Validation</h3>
                 <p className={styles.featureDescription}>
-                  Automatic query and body validation using Zod schemas.
+                  Automatic query and body validation using built-in validation.
                 </p>
               </div>
               <div className={styles.featureCard}>

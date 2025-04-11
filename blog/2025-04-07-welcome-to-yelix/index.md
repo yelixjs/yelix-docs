@@ -11,7 +11,7 @@ Let's meet with Yelix which a powerful backend framework for Deno that automates
 <!-- truncate -->
 
 Every few years, I find myself writing the same backend boilerplate: 
-- Data validation with Zod or some wrapper  
+- Data validation with built-in support
 - OpenAPI docs manually or half-generated  
 - Debugging middleware  
 - Watching request logs  
