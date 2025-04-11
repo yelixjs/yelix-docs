@@ -27,3 +27,18 @@ v0.1.*:
   label: v0.1.*
   permalink: /v0.1.*
   description: Blogs related to Yelix version 0.1.*, where * represents any patch version
+
+security:
+  label: Security
+  permalink: /security
+  description: Posts related to security features and updates
+
+offat:
+  label: OFFAT
+  permalink: /offat
+  description: Content about OWASP OFFAT integration and features
+
+owasp:
+  label: OWASP
+  permalink: /owasp
+  description: Posts related to OWASP security standards and tools
