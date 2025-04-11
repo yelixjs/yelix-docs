@@ -7,7 +7,7 @@ tags: [yelix, security, offat, owasp]
 
 # Yelix Now Supports OWASP OFFAT - Automated API Security Testing Made Easy
 
-Excited to announce that Yelix now fully supports OWASP OFFAT (OFFensive Api Tester) for automated API security testing. Let's explore how this integration helps secure your APIs with minimal effort.
+Excited to announce that Yelix now fully supports [OWASP OFFAT](https://owasp.org/OFFAT/) (OFFensive Api Tester) for automated API security testing. Let's explore how this integration helps secure your APIs with minimal effort.
 <!-- truncate -->
 
 ## What is OWASP OFFAT?
