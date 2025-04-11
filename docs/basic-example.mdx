@@ -1,0 +1,47 @@
+---
+sidebar_position: 2
+---
+
+# Basic Example
+
+Let's create a simple Yelix server that responds with "Hello World!" when you access the `/api/hello` endpoint.
+
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+
+<Tabs>
+  <TabItem value="apple" label="Dynamic Import" default>
+```ts title="main.ts"
+import { Yelix } from 'jsr:@murat/yelix';
+
+const app = new Yelix();
+app.loadEndpointsFromFolder('api');
+
+await app.serve();
+
+````
+  </TabItem>
+  <TabItem value="orange" label="Static Import">
+```ts title="main.ts"
+import { Yelix } from 'jsr:@murat/yelix';
+
+const app = new Yelix();
+
+const helloEndpoints = await import('./api/hello.ts');
+app.loadEndpoints([helloEndpoints]);
+
+await app.serve();
+````
+
+  </TabItem>
+</Tabs>
+
+```ts title="api/hello.ts"
+import { Ctx } from 'jsr:@murat/yelix';
+
+export async function GET(ctx: Ctx) {
+  return await ctx.text('Hello world!', 200);
+}
+
+export const path = '/api/hello';
+```
