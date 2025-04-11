@@ -1,0 +1,8 @@
+{
+  "label": "Plugins",
+  "position": 5,
+  "link": {
+    "type": "generated-index",
+    "description": "Information about how to use Hono Plugins in the Yelix."
+  }
+}
