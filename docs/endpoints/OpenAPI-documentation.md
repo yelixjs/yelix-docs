@@ -157,7 +157,7 @@ export const openAPI = {
         username: inp().string(),
         email: inp().string().email(),
         age: inp().number().min(18).max(99),
-        friendNames: inp().array(z.string()),
+        friendNames: inp().array(inp().string()),
         country: inp().string().enum(['USA', 'UK', 'India']), 
       }),
     },

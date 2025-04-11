@@ -91,6 +91,14 @@ describe('Hello endpoint test', () => {
 });
 ```
 
+:::warning
+
+To Deno understand the test, you need end your test file with `_test.ts`.
+Otherwise, Deno act like a normal file and doesn't run the test. \
+In this exampe we use filename as `hello_test.ts`.
+
+:::
+
 ## Testing Utilities
 
 ### request Function

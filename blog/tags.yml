@@ -22,3 +22,8 @@ yelix:
   label: Yelix
   permalink: /yelix
   description: Yelix is a powerful web server framework
+
+v0.1.*: 
+  label: v0.1.*
+  permalink: /v0.1.*
+  description: Blogs related to Yelix version 0.1.*, where * represents any patch version
