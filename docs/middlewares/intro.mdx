@@ -1,0 +1,154 @@
+---
+sidebar_position: 1
+---
+
+# Intro to Middlewares
+
+Yelix supports **middlewares** to help extend your application with custom logic. Middlewares are functions that can modify the request and response objects. They’re useful for tasks like logging, authentication, and error handling.
+
+Middlewares are executed in the order they are defined and can be applied either globally to all routes or to specific ones.
+
+## Using Built-in Middlewares
+
+Yelix provides a set of built-in middlewares to simplify common tasks. These can be easily added with just a few lines of code.
+
+### Logging Middleware
+
+This default middleware logs the request method and URL to the console. It’s automatically added to all routes unless your Yelix config explicitly sets `includeDefaultMiddlewares` to `false`.
+
+### Data Validation Middleware
+
+
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+
+<Tabs>
+  <TabItem value="maints" label="main.ts" default>
+
+```ts
+import { Yelix, requestDataValidationYelixMiddleware } from 'jsr:@murat/yelix';
+
+export async function startServer() {
+  const app = new Yelix();
+
+  // Enable the built-in data validation middleware
+  app.setMiddleware('dataValidation', requestDataValidationYelixMiddleware);
+  
+  app.serve();
+}
+
+await startServer();
+```
+  </TabItem>
+  <TabItem value="hellots" label="api/hello.ts">
+
+```ts
+import { Ctx, Infer, getValidatedBody, inp } from "jsr:@murat/yelix";
+
+export async function POST(ctx: Ctx) {
+  const { username, email } = getValidatedBody<Infer<typeof validation.body.subFields>>(ctx);
+  return await ctx.text(`Hello, ${username}!`, 200);
+}
+
+export const path = '/api/hello';
+// Apply the data validation middleware to this route
+export const middlewares = ['dataValidation'];
+
+export const validation = {
+  body: inp().object({
+    username: inp().string().min(3).max(255),
+    email: inp().string().email()
+  })
+};
+```
+
+  </TabItem>
+</Tabs>
+
+## Using Custom Middlewares
+
+You can create your own middlewares to handle tasks like authentication, request timing, error tracking, and more.
+
+A custom middleware is a function that receives a `Ctx` object and returns another function that takes a `next` function. The `next` function must be called to continue to the next middleware in the chain.
+
+### Example: Timing Middleware
+
+```ts title="middleware.ts"
+import { Middleware } from "jsr:@murat/yelix";
+
+const timingMiddleware: Middleware = async (req, next) => {
+  const start = Date.now();
+  await next();
+  const ms = Date.now() - start;
+  
+  req.ctx.res.headers.set("X-Response-Time", `${ms}ms`);
+  console.log(`Request took ${ms}ms`);
+}
+
+export default timingMiddleware;
+```
+
+### Adding the Middleware to Yelix
+
+```ts title="main.ts"
+import { Yelix, type OptionalAppConfigType } from 'jsr:@murat/yelix';
+import endpoints from './endpoints.ts';
+import timingMiddleware from './middleware.ts';
+
+export async function main(config?: OptionalAppConfigType) {
+  const yelixConfig: OptionalAppConfigType = {
+    environment: 'dev',
+  };
+
+  const app = new Yelix(config || yelixConfig);
+  
+  // Apply the custom middleware globally
+  app.setMiddleware('*', timingMiddleware);
+
+  app.loadEndpoints(endpoints);
+
+  await app.serve();
+  return app;
+}
+
+if (import.meta.main) {
+  await main();
+}
+```
+
+### Middleware Signature
+
+```ts
+app.setMiddleware(
+  '*',              // name
+  timingMiddleware  // middleware function
+);
+```
+
+- **name**: (`'*' | string | RegExp`)  
+  The key to identify where the middleware should be applied:
+  - Use `'*'` to apply globally
+  - A specific route name
+  - A regular expression to match multiple routes
+
+- **fn**: `(req: ApplyMiddlewareParams, next: () => Promise<void>) => Promise<void>`  
+  The middleware function, which receives:
+  - `req`: request metadata and context
+  - `next`: a function that passes control to the next middleware
+
+### `ApplyMiddlewareParams` Type
+
+```ts
+type ApplyMiddlewareParams = {
+  ctx: Ctx; // The request context, same as Hono’s Ctx
+
+  endpoint?: {
+    middlewares: H[];           // Middlewares applied to the endpoint
+    path: string;               // Endpoint path
+    methods: ParsedMethod[];    // Served HTTP methods
+    exports: ExportsType;       // Other exports from the endpoint file
+    openAPI?: OpenAPIYelixDoc;  // Optional OpenAPI documentation
+  }
+};
+```
+
