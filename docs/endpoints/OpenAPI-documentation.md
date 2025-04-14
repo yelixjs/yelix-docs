@@ -11,8 +11,14 @@ This page contains the OpenAPI documentation for the Yelix API. The documentatio
 Let's get started by initializing the OpenAPI documentation.
 
 ```ts title="main.ts"
-import { Yelix } from "jsr:@murat/yelix";
-import * as path from "jsr:@std/path@1.0.8";
+import {
+  Yelix,
+  RedocReference,
+  ScalarReference,
+  StoplightReference,
+  SwaggerReference,
+} from 'jsr:@murat/yelix';
+import * as path from 'jsr:@std/path@1.0.8';
 
 async function main() {
   // Port is 3030 by default
@@ -25,16 +31,20 @@ async function main() {
 
   // highlight-start
   app.initOpenAPI({
-    path: "/docs",
-    title: "Yelix Testing API",
-    description: "This is a testing API for Yelix",
+    title: 'Yelix Testing API',
+    description: 'This is a testing API for Yelix',
     servers: [
       {
-        url: "http://localhost:3030",
-        description: "Local Server",
+        url: 'http://localhost:3030',
+        description: 'Local Server',
       },
     ],
   });
+
+  app.serveAPIReference(new RedocReference());
+  app.serveAPIReference(new ScalarReference());
+  app.serveAPIReference(new SwaggerReference());
+  app.serveAPIReference(new StoplightReference());
   // highlight-end
 
   app.serve();
@@ -51,15 +61,15 @@ When you initialize the OpenAPI documentation, endpoints are automatically docum
 // ...imports...
 
 export async function GET(ctx: Ctx) {
-  const requestData = ctx.get("dataValidation").user;
+  const requestData = ctx.get('dataValidation').user;
   const query: QueryType = requestData.query;
 
-  const data = "Hello, " + query.name;
+  const data = 'Hello, ' + query.name;
   return await ctx.text(data, 200);
 }
 
-export const path = "/api/hello-no-cache";
-export const middlewares = ["dataValidation"];
+export const path = '/api/hello-no-cache';
+export const middlewares = ['dataValidation'];
 
 export const validation = {
   query: {
@@ -73,6 +83,7 @@ Without extra documentation, the OpenAPI documentation will look like this:
 ![without configuration](@site/static/img/openapi/1.png)
 
 Yelix automaticly takes some information when serving your endpoints.
+
 - Method: `GET` - Taken from the function name
 - Path: `/api/hello-no-cache` - Defined in the `path` variable
 - Validation: `query` - Defined in the `validation` variable
@@ -105,9 +116,12 @@ If you don't provide a description, Yelix will generate one for you based on the
 ```ts title="hello.ts"
 export const validation = {
   query: {
-    name: inp().string()
-    // highlight-next-line
-      .min(3).max(255).email(),
+    name: inp()
+      .string()
+      // highlight-next-line
+      .min(3)
+      .max(255)
+      .email(),
   },
 };
 ```
@@ -115,8 +129,6 @@ export const validation = {
 ![Automatic Description Generation](@site/static/img/openapi/4.png)
 
 `query: { [key: string]: { description: string } }` is also supported. If you don't provide a description, I will generate one for you with data validation(If you don't have extra validation, will be empty). Lemme do one example for you to understand better. Don't forget, all descriptions supports CommonMarkdown.
-
-
 
 ```ts title="hello.ts"
 export const openAPI = {
@@ -126,7 +138,7 @@ export const openAPI = {
   query: {
     name: {
       description: 'Name of the person',
-    }
+    },
   },
   // highlight-end
   responses: {
@@ -142,7 +154,7 @@ export const openAPI = {
 
 ![with query description](@site/static/img/openapi/3.png)
 
-## Responses 
+## Responses
 
 In openAPI export, you can define responses for the endpoint. The responses are displayed in the OpenAPI documentation.
 
@@ -158,7 +170,7 @@ export const openAPI = {
         email: inp().string().email(),
         age: inp().number().min(18).max(99),
         friendNames: inp().array(inp().string()),
-        country: inp().string().enum(['USA', 'UK', 'India']), 
+        country: inp().string().enum(['USA', 'UK', 'India']),
       }),
     },
   },
