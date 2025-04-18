@@ -77,9 +77,6 @@ export default function LandingPage() {
                 </div>
               </div>
               <div className={styles.codeCard}>
-                <div className={styles.codeBottomText}>
-                  The simplest and most customizable web server framework for Deno.
-                </div>
                 <div className={styles.codeHeader}>
                   <div className={styles.codeDots}>
                     <div className={styles.redDot}></div>
