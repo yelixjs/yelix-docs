@@ -47,7 +47,7 @@ async function generateEndpointsFile() {
   const targetFolder = getFolderFromArgs();
   const rootPath = path.join(currentDir, targetFolder);
 
-  let endpointsContent = 'const endpoints = [\n';
+  let endpointsContent = '// deno-lint-ignore no-explicit-any\n' + 'const endpoints: any[] = [\n';
 
   await walkDirectory(rootPath, (file) => {
     const extension = path.extname(file.path);
